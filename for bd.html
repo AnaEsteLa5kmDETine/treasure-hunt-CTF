@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Creepy Message</title>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: black;
+      color: #ff0000;
+      font-family: 'Creepster', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    #message {
+      font-size: 1.6rem;
+      max-width: 800px;
+      white-space: pre-line;
+      animation: flicker 2s infinite;
+    }
+
+    /* Flicker effect */
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #990000;
+      }
+      20%, 24%, 55% {
+        opacity: 0.4;
+        text-shadow: none;
+      }
+    }
+
+    #jumpscare {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black url('https://i.ibb.co/Jc3ySv3/horror-face.jpg') center/cover no-repeat;
+      z-index: 9999;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="message"></div>
+  <div id="jumpscare"></div>
+
+  <!-- Scary scream -->
+  <audio id="scream" src="https://assets.mixkit.co/active_storage/sfx/1233/1233-preview.mp3"></audio>
+
+  <script>
+    const text = `Hope you haven't forgotten who's special day it is today. 
+The best part is that you're not even going to get home from work and get to celebrate with your family because you will be at work, stuck with ME. 
+You poor thing... I almost feel bad for you but sure. I will give you a helping hand but only because I want to have some fun. 
+Search for my sugarbaby. You probably already know him since I like to keep my people close to my targets. 
+Let me help you out some more... you always go to CTF together and are good friends... good luck babe.  
+
+XOXO  
+-S`;
+
+    let i = 0;
+    const speed = 15; // faster typing speed (ms per character)
+    const messageDiv = document.getElementById("message");
+
+    function typeWriter() {
+      if (i < text.length) {
+        messageDiv.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, speed);
+      } else {
+        // text finished → schedule jumpscare
+        setTimeout(triggerJumpScare, 4000);
+      }
+    }
+
+    function triggerJumpScare() {
+      const jumpscare = document.getElementById("jumpscare");
+      jumpscare.style.display = "block";
+      document.getElementById("scream").play();
+      setTimeout(() => {
+        jumpscare.style.display = "none";
+      }, 2000);
+    }
+
+    window.onload = () => {
+      messageDiv.innerHTML = ""; // make sure it starts empty
+      typeWriter();
+    };
+  </script>
+</body>
+</html>
